@@ -6,7 +6,16 @@
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
-	
+
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"> <property 
+		name="driverClassName" value="com.mysql.cj.jdbc.Driver" /> <property name="jdbcUrl" 
+		value="jdbc:mysql://localhost:3306/test?serverTimezone=UTC" /> <property 
+		name="username" value="root" /> <property name="password" value="1111" /> 
+		</bean> -->
+
+
 	<!-- MyBatis SqlSessionFactory-->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	    <property name="dataSource" ref="dataSource"/>
@@ -15,23 +24,25 @@
 	   <!--  <property name="mapperLocations" value="classpath:kr/co/spring/mybatis/*.xml"/> -->
 	</bean>
 	
-	<!-- jdbc연결(DataSource) -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-	    <property name="driverClass" value="${driver}"/>
-	    <property name="url" value="${url}"/>
-	    <property name="username" value="${username}"/>
-	    <property name="password" value="${password}"/>	
-	</bean>
-	
-	<!-- db.properties 파일 연결 -->	
-	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-	    <property name="locations" value="/WEB-INF/mybatis/db.properties"/>
-	</bean>
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
+	<!-- API(HikariCP) -->
+	<!-- bean : 객체를 생성하는 태그 -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@127.0.0.1:1521:XE" />
+		<property name="username" value="scott" />
+		<property name="password" value="tiger" />
+	</bean>
+
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+																<!-- "close" : 커넥션 풀 자동 반납 -->
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
 	<context:component-scan base-package="kr.co.spring.model" />
 	<context:component-scan base-package="kr.co.spring.service" />
-	<mybatis-spring:scan base-package="kr.co.spring.mapper"/>
-		
+	<mybatis-spring:scan base-package="kr.co.spring.mapper" />
+
 </beans>
 

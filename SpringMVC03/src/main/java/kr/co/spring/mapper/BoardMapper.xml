@@ -15,15 +15,12 @@
 
 	<insert id="insertBoard" parameterType="boardVO">
 		insert into
-		tb_board(title, contents, count, writer)
+		tb_board(idx, title, contents, writer)
 		values(
-		#{title},
-		#{contents},
-		0
-		,
-		#{writer}
-
-		)
+			idx_seq.NEXTVAL,
+			#{title},
+			#{contents},
+			#{writer})
 	</insert>
 
 	<update id="updateBoard" parameterType="boardVO">
@@ -39,6 +36,14 @@
 		delete from tb_board where
 		idx=#{idx}
 	</delete>
+	
+	
+	<update id="boardUpdatpageCount" parameterType="Integer">
+		update tb_board
+		set count=count+1
+		where idx=#{idx}
+	
+	</update>
 
 <!--  
 

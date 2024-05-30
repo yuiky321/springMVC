@@ -20,7 +20,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardVO getContent(int idx) {
-		
+		mapper.boardUpdatpageCount(idx);
 		return mapper.read(idx);
 	}
 

@@ -47,6 +47,7 @@ public class BoardController {
 	
 	@RequestMapping("/getContents.do")
 	public String getContent(@RequestParam("idx") int idx, Model model) {
+	
 		BoardVO vo=service.getContent(idx);
 		model.addAttribute("vo", vo);
 		return "contents";

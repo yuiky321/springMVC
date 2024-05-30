@@ -10,5 +10,6 @@ public interface BoardMapper {
 	public int insertBoard(BoardVO vo);//게시물 등록
 	public int updateBoard(BoardVO vo);//게시물 수정
 	public int deleteBoard(int idx);//게시물 삭제
+	public void boardUpdatpageCount(int idx);//페이지 카운트+1
 	
 }
