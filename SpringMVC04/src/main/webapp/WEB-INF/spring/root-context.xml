@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"> <property 
+		name="driverClassName" value="com.mysql.cj.jdbc.Driver" /> <property name="jdbcUrl" 
+		value="jdbc:mysql://localhost:3306/test?serverTimezone=UTC" /> <property 
+		name="username" value="root" /> <property name="password" value="1111" /> 
+		</bean> -->
+
+
+	<!-- MyBatis SqlSessionFactory-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	    <property name="dataSource" ref="dataSource"/>
+	    <property name="configLocation" value="/WEB-INF/mybatis/config.xml"/>
+	    <!-- 같은 경로상(kr/co/spring/mapper)에 있기 때문에 xml위치 표시 불필요 -->
+	   <!--  <property name="mapperLocations" value="classpath:kr/co/spring/mybatis/*.xml"/> -->
+	</bean>
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- API(HikariCP) -->
+	<!-- bean : 객체를 생성하는 태그 -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@127.0.0.1:1521:XE" />
+		<property name="username" value="scott" />
+		<property name="password" value="tiger" />
+	</bean>
+
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+																<!-- "close" : 커넥션 풀 자동 반납 -->
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<context:component-scan base-package="kr.co.spring.model" />
+	<context:component-scan base-package="kr.co.spring.service" />
+	<mybatis-spring:scan base-package="kr.co.spring.mapper" />
+
+</beans>
+
